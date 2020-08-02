@@ -1,8 +1,8 @@
 package ddns.net.tracerspringmailing.web;
 
-
 import ddns.net.tracerspringmailing.payloads.ApiResponse;
 import ddns.net.tracerspringmailing.payloads.FeedBackRequest;
+import ddns.net.tracerspringmailing.payloads.KeySendRedirectionRequest;
 import ddns.net.tracerspringmailing.service.MailingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/feedback")
-public class FeedBackController {
+@RequestMapping("/key")
+public class KeyController {
+
+    private Logger logger = LoggerFactory.getLogger(KeyController.class);
 
     private MailingService mailingService;
 
-    private Logger logger = LoggerFactory.getLogger(FeedBackController.class);
-
-    @PostMapping(produces = "application/json")
-    public ApiResponse feedBack(@Valid @RequestBody FeedBackRequest feedBackRequest) {
+    @PostMapping(path = "/send", produces = "application/json")
+    public ApiResponse feedBack(@Valid @RequestBody KeySendRedirectionRequest request) {
         try{
 
-            mailingService.sendFeedback(feedBackRequest);
+            mailingService.sendKeyOnMail(request);
             logger.info("Mail sended");
 
         }catch (MailException e){
